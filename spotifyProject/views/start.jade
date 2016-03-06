@@ -1,4 +1,35 @@
-html
+doctype html
+html(lang='en')
   head
-    body
-      h1 hello world
+    meta(charset='utf-8')
+    title SPOTIFY
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no')
+    link(href='css/bootstrap.min.css', rel='stylesheet')
+    link(href='css/style.css', rel='stylesheet')
+    script(src='https://code.jquery.com/jquery-1.10.2.js')
+    script(src='https://code.jquery.com/ui/1.11.4/jquery-ui.js')
+    script(type='text/javascript', src='js/bootstrap.min.js')
+    script(type='text/javascript', src='js/visual.js')
+  body
+    nav.navbar.navbar-default.navbar-fixed-top
+      .container
+        .navbar-header
+          a.navbar-brand(href='#') Maybe this will eventually be a Spotify project
+    .container.main
+      .row.searchArea
+        .col-md-12
+          input#search.form-control.search(type='search', size='50', maxlength='200', placeholder='Genre 1, Genre 2', autofocus='', required='')
+          button#searchBtn.btn.btn-default(type='submit', name='') Submit
+      .row.resultsArea
+        .col-xs-12.col-sm-12.col-md-4
+          h2 Current Genres:
+          ul
+            li list 1
+            li list 2
+        .col-xs-12.col-sm-12.col-md-4
+          h2 Results!
+        .col-xs-12.col-sm-12.col-md-4
+          h2 Add More Genres
+          input(id='', type='search', size='50', maxlength='200', placeholder='Inser Genre', autofocus='', required='')
+          br
+          button.btn(type='submit', name='addGenreButton', id='') Submit

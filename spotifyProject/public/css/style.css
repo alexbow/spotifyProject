@@ -1,0 +1,14 @@
+.container.main {
+    margin-top: 100px;
+}
+
+
+// SEARCH AREA
+.searchArea .form-control #search {
+    margin: 0 auto;
+    width: 40%;
+}
+
+.searchArea {
+    margin: 0 auto;
+}

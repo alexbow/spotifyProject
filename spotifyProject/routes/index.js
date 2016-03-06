@@ -2,10 +2,17 @@ var express = require('express');
 var router = express.Router();
 var querystring = require('querystring');
 var request = require('request'); // "Request" library
+var SpotifyWebApi = require('spotify-web-api-node');
 
-var client_id = '254640d2091f4efdadb1bb21313edd64'; // Your client id
-var client_secret = 'c53367b395764dfd90b1da7f9598b38d'; // Your client secret
-var redirect_uri = 'http://localhost:8000/callback'; // Your redirect uri
+// var client_id = '254640d2091f4efdadb1bb21313edd64'; // Your client id
+// var client_secret = 'c53367b395764dfd90b1da7f9598b38d'; // Your client secret
+// var redirect_uri = 'http://localhost:8000/callback'; // Your redirect uri
+
+var spotifyApi = new SpotifyWebApi({
+  clientId : '254640d2091f4efdadb1bb21313edd64',
+  clientSecret : 'c53367b395764dfd90b1da7f9598b38d',
+  redirectUri : 'http://localhost:8000/callback'
+});
 /* GET home page. */
 router.get('/', function(req, res, next) {  
   res.render('index', { title: 'Express' });
@@ -38,9 +45,9 @@ router.get('/login', function(req, res) {
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
-      client_id: client_id,
+      client_id: spotifyApi.clientId,
       scope: scope,
-      redirect_uri: redirect_uri,
+      redirect_uri: spotifyApi.redirectUri,
       state: state
     }));
 });
@@ -71,7 +78,7 @@ router.get('/callback', function(req, res) {
         grant_type: 'authorization_code'
       },
       headers: {
-        'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+        'Authorization': 'Basic ' + (new Buffer(spotifyApi.clientId + ':' + spotifyApi.clientSecret).toString('base64'))
       },
       json: true
     };
@@ -121,7 +128,7 @@ router.get('/refresh_token', function(req, res) {
   var refresh_token = req.query.refresh_token;
   var authOptions = {
     url: 'https://accounts.spotify.com/api/token',
-    headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
+    headers: { 'Authorization': 'Basic ' + (new Buffer(spotifyApi.clientId + ':' + spotifyApi.clientSecret).toString('base64')) },
     form: {
       grant_type: 'refresh_token',
       refresh_token: refresh_token
@@ -138,6 +145,29 @@ router.get('/refresh_token', function(req, res) {
     }
   });
 });
+
+// var authOptions1 = {
+//     url: 'https://api.spotify.com//v1/browse/categories/pop/playlists',
+//     dataType:'json',
+//     headers: {
+//         'Authorization': "Bearer BQDhexjNrYowX25xFI96zN917tTXcEHb1mEXw7640012iqM-v95-vPMWqW8BDdlWpy4_JVorIefZGuzpjnPxK9-V7wlawyviXGAu46IUuPH1AOQoHco9IEE-7esDMPfyHLyXHCST-UV0Wz6zDRlP4UWXLjeh6Ukv-nEX87W87GbttEk2r9dejmyLyjiQvUgTtRGPnICnbeo3wjlnmWU14iB8Xbqw8PWhNTmiqhHBSn1S",
+//         'Content-Type': 'application/json',
+//     }
+// };
+
+// request.get(authOptions1, function(error, response, body) {
+//     console.log(body);
+//     console.log("POST REQUEST");
+// });
+
+spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE', { limit: 10, offset: 20 }, function(err, data) {
+  if (err) {
+    console.error('Something went wrong!');
+  } else {
+    console.log(data.body);
+  }
+});
+
 
 
 module.exports = router;
