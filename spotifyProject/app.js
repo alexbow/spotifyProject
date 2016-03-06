@@ -6,10 +6,21 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var start = require('./routes/start');
+
+var querystring = require('querystring');
+
+
+var client_id = '254640d2091f4efdadb1bb21313edd64'; // Your client id
+var client_secret = 'c53367b395764dfd90b1da7f9598b38d'; // Your client secret
+var redirect_uri = 'http://localhost:8000/callback'; // Your redirect uri
 
 var app = express();
 
+
+
+
+var stateKey = 'spotify_auth_state';
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -23,7 +34,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/start', start);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -57,4 +68,5 @@ app.use(function(err, req, res, next) {
 });
 
 
+app.listen(8000);
 module.exports = app;
